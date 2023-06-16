@@ -56,6 +56,7 @@ void registerLoan(DBBorrow_t *borrows_db, int ISBN, char cardNumber[]) {
     do {
         printf("Enter return time without \",\" character (use DD.MM.YYYY format):\n");
         fgets(returnTime, BUFFMAX, stdin);
+        returnTime[strlen(returnTime) - 1] = '\0';
     } while (strchr(returnTime, ',') != NULL);
 
     borrows_db->borrowsDatabase[borrows_db->borrowsNumber].returnTime = malloc(strlen(returnTime) * sizeof(char));

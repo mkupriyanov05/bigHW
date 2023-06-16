@@ -9,6 +9,7 @@ void addStudent(DBStudent_t *students_db) {
 
     printf("Enter card number:\n");
     fgets(buffString, BUFFMAX, stdin);
+    buffString[strlen(buffString) - 1] = '\0';
 
     for (int i = 0; i < students_db->studentsNumber; i++) {
         if (strcmp(buffString, students_db->studentsDatabase[i].cardNumber) == 0) {
@@ -31,21 +32,25 @@ void addStudent(DBStudent_t *students_db) {
 
     printf("Enter first name:\n");
     fgets(buffString, BUFFMAX, stdin);
+    buffString[strlen(buffString) - 1] = '\0';
     students_db->studentsDatabase[students_db->studentsNumber].firstName = calloc(strlen(buffString), sizeof(char));
     strcpy(students_db->studentsDatabase[students_db->studentsNumber].firstName, buffString);
 
     printf("Enter surname:\n");
     fgets(buffString, BUFFMAX, stdin);
+    buffString[strlen(buffString) - 1] = '\0';
     students_db->studentsDatabase[students_db->studentsNumber].surName = calloc(strlen(buffString), sizeof(char));
     strcpy(students_db->studentsDatabase[students_db->studentsNumber].surName, buffString);
 
     printf("Enter faculty:\n");
     fgets(buffString, BUFFMAX, stdin);
+    buffString[strlen(buffString) - 1] = '\0';
     students_db->studentsDatabase[students_db->studentsNumber].faculty = calloc(strlen(buffString), sizeof(char));
     strcpy(students_db->studentsDatabase[students_db->studentsNumber].faculty, buffString);
 
     printf("Enter speciality:\n");
     fgets(buffString, BUFFMAX, stdin);
+    buffString[strlen(buffString) - 1] = '\0';
     students_db->studentsDatabase[students_db->studentsNumber].speciality = calloc(strlen(buffString), sizeof(char));
     strcpy(students_db->studentsDatabase[students_db->studentsNumber].speciality, buffString);
 
@@ -56,7 +61,8 @@ void addStudent(DBStudent_t *students_db) {
 void deleteStudent(DBAdmin_t *allDatabases) {
     char cardNumber[BUFFMAX];
     printf("Enter card number to delete student from database:\n");
-    scanf("%s", cardNumber);
+    fgets(cardNumber, BUFFMAX, stdin);
+    cardNumber[strlen(cardNumber) - 1] = '\0';
 
     for (int i = 0; i < allDatabases->student_db.studentsNumber; i++) {
         if (strcmp(cardNumber, allDatabases->student_db.studentsDatabase[i].cardNumber) == 0) {
@@ -69,17 +75,18 @@ void deleteStudent(DBAdmin_t *allDatabases) {
                 allDatabases->student_db.studentsDatabase[j] = allDatabases->student_db.studentsDatabase[j + 1];
             allDatabases->student_db.studentsNumber--;
 
-            puts("Student successfully deleted!");
+            printf("Student successfully deleted!\n");
             return;
         }
     }
-    puts("Sorry, you're trying to delete imaginary student");
+    printf("Sorry, you're trying to delete imaginary student\n");
 }
 
 void editStudentInfo(DBStudent_t *students_db) {
     char buffString[BUFFMAX];
     printf("Enter student's card number or '0' to exit editor:\n");
     fgets(buffString, BUFFMAX, stdin);
+    buffString[strlen(buffString) - 1] = '\0';
     int i = 0;
 
     if (strcmp(buffString, "0") == 0)
@@ -91,7 +98,7 @@ void editStudentInfo(DBStudent_t *students_db) {
     }
 
     if (i == students_db->studentsNumber) {
-        puts("Sorry, you're trying to edit imaginary student's info");
+        printf("Sorry, you're trying to edit imaginary student's info\n");
         return;
     }
 
@@ -113,6 +120,7 @@ void editStudentInfo(DBStudent_t *students_db) {
         case first_name:
             printf("Enter new first name:\n");
             fgets(buffString, BUFFMAX, stdin);
+            buffString[strlen(buffString) - 1] = '\0';
 
             strcpy(students_db->studentsDatabase[i].firstName, buffString);
             strcpy(buffString, "");
@@ -123,6 +131,7 @@ void editStudentInfo(DBStudent_t *students_db) {
         case surname:
             printf("Enter new surname:\n");
             fgets(buffString, BUFFMAX, stdin);
+            buffString[strlen(buffString) - 1] = '\0';
 
             strcpy(students_db->studentsDatabase[i].surName, buffString);
             strcpy(buffString, "");
@@ -133,6 +142,7 @@ void editStudentInfo(DBStudent_t *students_db) {
         case faculty:
             printf("Enter new faculty:\n");
             fgets(buffString, BUFFMAX, stdin);
+            buffString[strlen(buffString) - 1] = '\0';
 
             strcpy(students_db->studentsDatabase[i].faculty, buffString);
             strcpy(buffString, "");
@@ -143,6 +153,7 @@ void editStudentInfo(DBStudent_t *students_db) {
         case specialty:
             printf("Enter new specialty:\n");
             fgets(buffString, BUFFMAX, stdin);
+            buffString[strlen(buffString) - 1] = '\0';
 
             strcpy(students_db->studentsDatabase[i].speciality, buffString);
             strcpy(buffString, "");
@@ -162,6 +173,7 @@ void showStudentByCardNumber(DBStudent_t *students_db) {
     char buffString[BUFFMAX];
     printf("Enter card number to see student info:\n");
     fgets(buffString, BUFFMAX, stdin);
+    buffString[strlen(buffString) - 1] = '\0';
 
     for (int i = 0; i < students_db->studentsNumber; ++i) {
         if (strcmp(students_db->studentsDatabase[i].cardNumber, buffString) == 0) {
@@ -181,6 +193,7 @@ void showStudentBySurname(DBStudent_t *students_db) {
     bool studentFound = false;
     printf("Enter surname to see student info:\n");
     fgets(buffString, BUFFMAX, stdin);
+    buffString[strlen(buffString) - 1] = '\0';
 
     printf("Card number \t First name \t Surname \t Faculty \t Speciality\n");
     printf("-------------------------------------------------------------\n");
@@ -203,6 +216,7 @@ void showBorrowedBooks(DBAdmin_t *allDatabases) {
     char buffString[BUFFMAX];
     printf("Enter student's card number;\n");
     fgets(buffString, BUFFMAX, stdin);
+    buffString[strlen(buffString) - 1] = '\0';
 
     for (int i = 0; i < allDatabases->borrow_db.borrowsNumber; ++i) {
         if (strcmp(allDatabases->borrow_db.borrowsDatabase[i].cardNumber, buffString) == 0) {

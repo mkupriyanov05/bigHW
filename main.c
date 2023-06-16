@@ -31,6 +31,14 @@
 
 int main() {
 
+//  Login: boss
+//  Password: qwerty
+//
+//  Login: books
+//  Password: Book12345
+//
+//  Login: students
+//  Password: Student12345
 
     launcher();
 
