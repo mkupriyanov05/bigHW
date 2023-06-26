@@ -3,12 +3,13 @@
 #include "booksProcessing.h"
 #include "studentsProcessing.h"
 #include "borrowedProcessing.h"
+#include "logs.h"
 
 
-bool authentication(DBUser_t *user_db, AuthData_t *authData, DBAdmin_t *allDatabases);
-void upperMenu(DBAdmin_t *allDatabases, DBUser_t *user_db);
-void booksMenu(bool returnPermission, DBAdmin_t *allDatabases, DBUser_t *user_db);
-void studentsMenu(bool returnPermission, DBAdmin_t *allDatabases, DBUser_t *user_db);
+void authentication(DBUser_t *user_db, AuthData_t *authData, DBAdmin_t *allDatabases);
+void upperMenu(DBAdmin_t *allDatabases, DBUser_t *user_db, char *admin);
+void booksMenu(bool returnPermission, DBAdmin_t *allDatabases, DBUser_t *user_db, char *admin);
+void studentsMenu(bool returnPermission, DBAdmin_t *allDatabases, DBUser_t *user_db, char *admin);
 
 int launcher() {
     DBAdmin_t allDatabases;
@@ -27,7 +28,8 @@ int launcher() {
     allDatabases.borrow_db.borrowsDatabase = (Borrow_t*)malloc(sizeof(Borrow_t));
 
 
-    parseFile((void**)&(user_db.usersDatabase), &user_db.usersNumber, USERS_FILE, sizeof(User_t), users);
+    parseFile((void**)&(user_db.usersDatabase), &user_db.usersNumber,
+              USERS_FILE, sizeof(User_t), users);
     parseFile((void**)&(allDatabases.student_db.studentsDatabase), &allDatabases.student_db.studentsNumber,
               STUDENTS_FILE, sizeof(Student_t), students);
     parseFile((void**)&(allDatabases.book_db.booksDatabase), &allDatabases.book_db.booksNumber,
@@ -50,46 +52,51 @@ int launcher() {
     char c;
     scanf("%c", &c); //skip trailing newline
 
-    if (!authentication(&user_db, &authData, &allDatabases))
-        printf("No such user\n");
-
-    exitMenu(&allDatabases, &user_db);
+    authentication(&user_db, &authData, &allDatabases);
 
     return 0;
 }
 
 
-bool authentication(DBUser_t *user_db, AuthData_t *authData, DBAdmin_t *allDatabases) {
+void authentication(DBUser_t *user_db, AuthData_t *authData, DBAdmin_t *allDatabases) {
+    recordLog(func_authentication_log, authData->inputLogin);
+
     for (int i = 0; i < user_db->usersNumber; ++i) {
         if (strcmp(user_db->usersDatabase[i].login, authData->inputLogin) == 0
             && strcmp(user_db->usersDatabase[i].passHash, authData->inputPassword) == 0) {
 
             strcpy(authData->inputPassword, "");
             printf("Authentication succeed. Hello, %s!\n", user_db->usersDatabase[i].login);
+            recordLog(logIn_Success_log, authData->inputLogin);
 
             if (user_db->usersDatabase[i].studentsRights && user_db->usersDatabase[i].booksRights)
-                upperMenu(allDatabases, user_db);
+                upperMenu(allDatabases, user_db, authData->inputLogin);
 
             else if (user_db->usersDatabase[i].studentsRights && !user_db->usersDatabase[i].booksRights)
-                studentsMenu(false, allDatabases, user_db);
+                studentsMenu(false, allDatabases, user_db, authData->inputLogin);
 
             else if (!user_db->usersDatabase[i].studentsRights && user_db->usersDatabase[i].booksRights)
-                booksMenu(false, allDatabases, user_db);
+                booksMenu(false, allDatabases, user_db, authData->inputLogin);
 
-            else
+            else {
                 printf("You have no rights (woman moment)\n");
+                recordLog(logIn_NoRights_log, authData->inputLogin);
+            }
 
-            return true;
+            break;
         }
     }
     strcpy(authData->inputPassword, "");
     printf("Wrong login or password\n");
+    recordLog(logIn_Error_log, authData->inputLogin);
 
-    return false;
+    exitMenu(allDatabases, user_db, authData->inputLogin);
 }
 
 
-void upperMenu(DBAdmin_t *allDatabases, DBUser_t *user_db) {
+void upperMenu(DBAdmin_t *allDatabases, DBUser_t *user_db, char *admin) {
+    recordLog(func_upperMenu_log, admin);
+
     char buffString[BUFFMAX];
     int menuChoice;
 
@@ -102,23 +109,26 @@ void upperMenu(DBAdmin_t *allDatabases, DBUser_t *user_db) {
 
     switch (menuChoice) {
         case 0:
-            exitMenu(allDatabases, user_db);
+            exitMenu(allDatabases, user_db, admin);
             break;
         case books:
-            booksMenu(true, allDatabases, user_db);
+            booksMenu(true, allDatabases, user_db, admin);
             break;
         case students:
-            studentsMenu(true, allDatabases, user_db);
+            studentsMenu(true, allDatabases, user_db, admin);
             break;
         default:
             printf("Try again\n");
+            recordLog(menu_WrongChoice_log, admin);
             break;
     }
-    upperMenu(allDatabases, user_db);
+    upperMenu(allDatabases, user_db, admin);
 }
 
 
-void booksMenu(bool returnPermission, DBAdmin_t *allDatabases, DBUser_t *user_db) {
+void booksMenu(bool returnPermission, DBAdmin_t *allDatabases, DBUser_t *user_db, char *admin) {
+    recordLog(func_booksMenu_log, admin);
+
     printf("Choose watcha wanna do with book database:\n");
     printf("0 - Finish the program\n");
     printf("1 - Return to the menu of the menus\n");
@@ -138,49 +148,53 @@ void booksMenu(bool returnPermission, DBAdmin_t *allDatabases, DBUser_t *user_db
 
     switch (choice) {
         case finish_b:
-            exitMenu(allDatabases, user_db);
+            exitMenu(allDatabases, user_db, admin);
             break;
         case rtrn_b:
             if (returnPermission) {
-                upperMenu(allDatabases, user_db);
+                upperMenu(allDatabases, user_db, admin);
                 break;
             } else {
                 printf("Sorry, you have no permission to return to upper menu\n");
+                recordLog(menu_NoReturnPermission_log, admin);
                 break;
             }
         case add_b:
-            addBook(&allDatabases->book_db);
+            addBook(&allDatabases->book_db, admin);
             break;
         case del_b:
-            deleteBook(allDatabases);
+            deleteBook(allDatabases, admin);
             break;
         case edit_b:
-            editBookInfo(&allDatabases->book_db);
+            editBookInfo(&allDatabases->book_db, admin);
             break;
         case oneBook_b:
-            showOneBook(&allDatabases->book_db);
+            showOneBook(&allDatabases->book_db, admin);
             break;
         case allBooks_b:
-            showAllBooks(&allDatabases->book_db);
+            showAllBooks(&allDatabases->book_db, admin);
             break;
         case give_b:
-            giveBook(allDatabases);
+            giveBook(allDatabases, admin);
             break;
         case take_b:
-            takeBook(allDatabases);
+            takeBook(allDatabases, admin);
             break;
         case borrowers_b:
-            showLoaners(allDatabases);
+            showLoaners(allDatabases, admin);
             break;
         default:
             printf("Try again\n");
+            recordLog(menu_WrongChoice_log, admin);
             break;
     }
-    booksMenu(returnPermission, allDatabases, user_db);
+    booksMenu(returnPermission, allDatabases, user_db, admin);
 }
 
 
-void studentsMenu(bool returnPermission, DBAdmin_t *allDatabases, DBUser_t *user_db) {
+void studentsMenu(bool returnPermission, DBAdmin_t *allDatabases, DBUser_t *user_db, char *admin) {
+    recordLog(func_studentsMenu_log, admin);
+
     printf("Choose watcha wanna do with student database:\n");
     printf("0 - Finish the program\n");
     printf("1 - Return to the menu of the menus\n");
@@ -198,42 +212,46 @@ void studentsMenu(bool returnPermission, DBAdmin_t *allDatabases, DBUser_t *user
 
     switch (choice) {
         case finish_s:
-            exitMenu(allDatabases, user_db);
+            exitMenu(allDatabases, user_db, admin);
             break;
         case rtrn_s:
         if (returnPermission) {
-            upperMenu(allDatabases, user_db);
+            upperMenu(allDatabases, user_db, admin);
             break;
         } else {
+            recordLog(menu_NoReturnPermission_log, admin);
             printf("Sorry, you have no permission to return to upper menu");
             break;
         }
         case add_s:
-            addStudent(&allDatabases->student_db);
+            addStudent(&allDatabases->student_db, admin);
             break;
         case del_s:
-            deleteStudent(allDatabases);
+            deleteStudent(allDatabases, admin);
             break;
         case edit_s:
-            editStudentInfo(&allDatabases->student_db);
+            editStudentInfo(&allDatabases->student_db, admin);
             break;
         case studentByCard_s:
-            showStudentByCardNumber(&allDatabases->student_db);
+            showStudentByCardNumber(&allDatabases->student_db, admin);
             break;
         case studentBySurname_s:
-            showStudentBySurname(&allDatabases->student_db);
+            showStudentBySurname(&allDatabases->student_db, admin);
             break;
         case borrowed_s:
-            showBorrowedBooks(allDatabases);
+            showBorrowedBooks(allDatabases, admin);
             break;
         default:
             printf("Try again\n");
+            recordLog(menu_WrongChoice_log, admin);
             break;
     }
-    studentsMenu(returnPermission, allDatabases, user_db);
+    studentsMenu(returnPermission, allDatabases, user_db, admin);
 }
 
-void exitMenu(DBAdmin_t *allDatabases, DBUser_t *user_db) {
+void exitMenu(DBAdmin_t *allDatabases, DBUser_t *user_db, char *admin) {
+    recordLog(func_exitMenu_log, admin);
+
     rewriteBooksFile(allDatabases->book_db);
     rewriteStudentsFile(allDatabases->student_db);
     rewriteBorrowsFile(allDatabases->borrow_db);
@@ -243,6 +261,7 @@ void exitMenu(DBAdmin_t *allDatabases, DBUser_t *user_db) {
     freeStudentsDatabase(&allDatabases->student_db);
     freeBorrowsDatabase(&allDatabases->borrow_db);
 
+    recordLog(exit_Success_log, admin);
     printf("Program successfully finished!\n");
     exit(0);
 }

@@ -1,5 +1,6 @@
 #include "borrowedProcessing.h"
 #include "parseFreeRewrite.h"
+#include "logs.h"
 
 
 bool ifStudentHasBooks(DBBorrow_t *borrow_db, Student_t currStudent) {
@@ -19,30 +20,15 @@ bool ifBookBelongsToStudent(DBBorrow_t *borrow_db, Book_t currBook) {
     return false;
 }
 
-void addBorrowToFile(Borrow_t *newBorrow, char mode[]) {
-    FILE *borrows_f = fopen(BORROWS_FILE, mode);
 
-    if (borrows_f == NULL) {
-        puts("file opening error");
-        exit(1);
-    }
-
-    if (strcmp(mode, "w") != 0)
-        fprintf(borrows_f, "\n");
-
-    fprintf(borrows_f, "%d,%s,%s",
-            newBorrow->ISBN, newBorrow->cardNumber, newBorrow->returnTime);
-
-    fclose(borrows_f);
-}
-
-void registerLoan(DBBorrow_t *borrows_db, int ISBN, char cardNumber[]) {
+void registerLoan(DBBorrow_t *borrows_db, int ISBN, char cardNumber[], char *admin) {
     Borrow_t *temp;
     temp = realloc(borrows_db->borrowsDatabase, sizeof(Borrow_t) * (borrows_db->borrowsNumber + 1));
     if (temp != NULL)
         borrows_db->borrowsDatabase = temp;
     else {
-        puts("Sorry, this programmer is talentless");
+        printf("Sorry, this programmer is talentless\n");
+        recordLog(memory_ReallocError_log, admin);
         return;
     }
 

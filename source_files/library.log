@@ -1,0 +1,30 @@
+Mon Jun 26 20:36:42 2023,boss,authentication
+Mon Jun 26 20:36:42 2023,boss,Authentication succeed
+Mon Jun 26 20:36:42 2023,boss,upperMenu
+Mon Jun 26 20:36:47 2023,boss,booksMenu
+Mon Jun 26 20:36:52 2023,boss,exitMenu
+Mon Jun 26 20:36:52 2023,boss,Program finished
+Mon Jun 26 20:52:25 2023,books,authentication
+Mon Jun 26 20:52:25 2023,books,Authentication succeed
+Mon Jun 26 20:52:25 2023,books,booksMenu
+Mon Jun 26 20:52:47 2023,books,addBook
+Mon Jun 26 20:52:50 2023,books,ISBN is already taken
+Mon Jun 26 20:52:50 2023,books,booksMenu
+Mon Jun 26 20:53:07 2023,books,addBook
+Mon Jun 26 20:53:47 2023,books,Book successfully added
+Mon Jun 26 20:53:47 2023,books,booksMenu
+Mon Jun 26 20:53:50 2023,books,exitMenu
+Mon Jun 26 20:53:50 2023,books,Program finished
+Mon Jun 26 20:54:28 2023,books,authentication
+Mon Jun 26 20:54:28 2023,books,Authentication succeed
+Mon Jun 26 20:54:28 2023,books,booksMenu
+Mon Jun 26 20:54:33 2023,books,deleteBook
+Mon Jun 26 20:54:36 2023,books,Book successfully deleted
+Mon Jun 26 20:54:36 2023,books,booksMenu
+Mon Jun 26 20:54:38 2023,books,exitMenu
+Mon Jun 26 20:54:38 2023,books,Program finished
+Mon Jun 26 20:55:32 2023,boss,authentication
+Mon Jun 26 20:55:32 2023,boss,Authentication succeed
+Mon Jun 26 20:55:32 2023,boss,upperMenu
+Mon Jun 26 20:55:33 2023,boss,exitMenu
+Mon Jun 26 20:55:33 2023,boss,Program finished

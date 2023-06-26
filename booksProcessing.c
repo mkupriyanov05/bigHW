@@ -2,9 +2,12 @@
 #include "parseFreeRewrite.h"
 #include "borrowedProcessing.h"
 #include "sortAlgorithm.h"
+#include "logs.h"
 
 
-void addBook(DBBook_t *books_db) {
+void addBook(DBBook_t *books_db, char *admin) {
+    recordLog(func_addBook_log, admin);
+
     char buffString[BUFFMAX];
     int ISBN;
 
@@ -15,6 +18,7 @@ void addBook(DBBook_t *books_db) {
     for (int i = 0; i < books_db->booksNumber; i++) {
         if (ISBN == books_db->booksDatabase[i].ISBN) {
             printf("Sorry, this ISBN is already taken by another book\n");
+            recordLog(book_AddError_log, admin);
             return;
         }
     }
@@ -25,6 +29,7 @@ void addBook(DBBook_t *books_db) {
         books_db->booksDatabase = temp;
     else {
         printf("Sorry, this programmer is talentless\n");
+        recordLog(memory_ReallocError_log, admin);
         return;
     }
 
@@ -49,10 +54,14 @@ void addBook(DBBook_t *books_db) {
             books_db->booksDatabase[books_db->booksNumber].maxAmount;
 
     books_db->booksNumber++;
+    printf("Book successfully added!\n");
+    recordLog(book_AddSuccess_log, admin);
 }
 
 
-void deleteBook(DBAdmin_t *allDatabases) {
+void deleteBook(DBAdmin_t *allDatabases, char *admin) {
+    recordLog(func_deleteBook_log, admin);
+
     char buffString[BUFFMAX];
     int ISBN;
     printf("Enter book ISBN to delete from database:\n");
@@ -63,6 +72,7 @@ void deleteBook(DBAdmin_t *allDatabases) {
         if (ISBN == allDatabases->book_db.booksDatabase[i].ISBN) {
             if (ifBookBelongsToStudent(&allDatabases->borrow_db, allDatabases->book_db.booksDatabase[i])) {
                 printf("Cannot delete book that is borrowed by a student\n");
+                recordLog(book_DeleteBorrowed_log, admin);
                 return;
             }
             freeOneBook(&allDatabases->book_db.booksDatabase[i]);
@@ -71,13 +81,17 @@ void deleteBook(DBAdmin_t *allDatabases) {
             allDatabases->book_db.booksNumber--;
 
             printf("Book successfully deleted!\n");
+            recordLog(book_DeleteSuccess_log, admin);
             return;
         }
     }
     printf("Sorry, you're trying to delete imaginary book\n");
+    recordLog(book_DeleteNotFound_log, admin);
 }
 
-void editBookInfo(DBBook_t *books_db) {
+void editBookInfo(DBBook_t *books_db, char *admin) {
+    recordLog(func_editBookInfo_log, admin);
+
     char buffString[BUFFMAX];
     int currISBN;
     printf("Enter book's ISBN or '0' to exit editor:\n");
@@ -99,6 +113,7 @@ void editBookInfo(DBBook_t *books_db) {
 
     if (!bookFound) {
         printf("Sorry, you're trying to edit imaginary book's info\n");
+        recordLog(book_EditNotFound_log, admin);
         return;
     }
 
@@ -128,6 +143,7 @@ void editBookInfo(DBBook_t *books_db) {
             strcpy(newInfo, "");
 
             printf("Data successfully edited!\n");
+            recordLog(book_EditSuccess_log, admin);
             break;
 
         case book_name:
@@ -139,6 +155,7 @@ void editBookInfo(DBBook_t *books_db) {
             strcpy(newInfo, "");
 
             printf("Data successfully edited!\n");
+            recordLog(book_EditSuccess_log, admin);
             break;
 
         case max_amount:
@@ -151,16 +168,20 @@ void editBookInfo(DBBook_t *books_db) {
             books_db->booksDatabase[i].currAmount += (books_db->booksDatabase[i].maxAmount - prevMaxAmount);
 
             printf("Data successfully edited!\n");
+            recordLog(book_EditSuccess_log, admin);
             break;
 
         default:
             printf("Wrong info field is chosen. Try again\n");
+            recordLog(book_EditWrongChoice_log, admin);
             break;
     }
-    editBookInfo(books_db);
+    editBookInfo(books_db, admin);
 }
 
-void showOneBook(DBBook_t *books_db) {
+void showOneBook(DBBook_t *books_db, char *admin) {
+    recordLog(func_showOneBook_log, admin);
+
     char buffString[BUFFMAX];
     int currISBN;
     printf("Enter ISBN to watch book info:\n");
@@ -178,10 +199,13 @@ void showOneBook(DBBook_t *books_db) {
     }
 
     printf("Sorry, no book with this ISBN\n");
+    recordLog(book_ShowOneNotFound_log, admin);
 }
 
 
-void showAllBooks(DBBook_t *books_db) {
+void showAllBooks(DBBook_t *books_db, char *admin) {
+    recordLog(func_showAllBooks_log, admin);
+
     quickSort(books_db->booksDatabase, 0, books_db->booksNumber - 1, compareIntegers, offsetof(Book_t, ISBN));
 
     printf("ISBN \t Author \t Book Name \t Max Amount \t Curr Amount\n");
@@ -193,7 +217,9 @@ void showAllBooks(DBBook_t *books_db) {
     }
 }
 
-void giveBook(DBAdmin_t *allDatabases) {
+void giveBook(DBAdmin_t *allDatabases, char *admin) {
+    recordLog(func_giveBook_log, admin);
+
     char buffString[BUFFMAX];
     int ISBN;
 
@@ -217,6 +243,7 @@ void giveBook(DBAdmin_t *allDatabases) {
 
     if (!studentFound) {
         printf("Sorry, student not found\n");
+        recordLog(book_GiveStudentNotFound_log, admin);
         return;
     }
 
@@ -225,15 +252,18 @@ void giveBook(DBAdmin_t *allDatabases) {
             if (allDatabases->book_db.booksDatabase[i].currAmount == 0) {
                 printf("No books with ISBN %d available(\n",
                        allDatabases->book_db.booksDatabase[i].ISBN);
+                recordLog(book_GiveNoBooksAvailable_log, admin);
                 return;
             }
             allDatabases->book_db.booksDatabase[i].currAmount--;
-            registerLoan(&allDatabases->borrow_db, ISBN, buffString);
+            registerLoan(&allDatabases->borrow_db, ISBN, buffString, admin);
             printf("Loan registered!\n");
+            recordLog(book_GiveSuccess_log, admin);
             return;
         }
     }
     printf("Sorry, book haven't been found\n");
+    recordLog(book_GiveBookNotFound_log, admin);
 }
 
 static bool amountProcessing(DBBook_t *books_db, int ISBN) {
@@ -251,7 +281,9 @@ static bool amountProcessing(DBBook_t *books_db, int ISBN) {
     return true;
 }
 
-void takeBook(DBAdmin_t *allDatabases) {
+void takeBook(DBAdmin_t *allDatabases, char *admin) {
+    recordLog(func_takeBook_log, admin);
+
     char buffString[BUFFMAX];
     int ISBN;
     printf("Enter ISBN of the book you want to give back:\n");
@@ -276,21 +308,28 @@ void takeBook(DBAdmin_t *allDatabases) {
 
     if (!studentFound) {
         printf("Sorry, student not found\n");
+        recordLog(book_TakeStudentNotFound_log, admin);
         return;
     }
     if (!bookFound) {
         printf("Sorry, book not found\n");
+        recordLog(book_TakeBookNotFound_log, admin);
         return;
     }
 
-    if (amountProcessing(&allDatabases->book_db, ISBN))
+    if (amountProcessing(&allDatabases->book_db, ISBN)) {
+        recordLog(book_TakeAllBooksBack_log, admin);
         return;
+    }
+
     registerReturn(&allDatabases->borrow_db, ISBN);
     printf("Book returned!\n");
-
+    recordLog(book_TakeSuccess_log, admin);
 }
 
-void showLoaners(DBAdmin_t *allDatabases) {
+void showLoaners(DBAdmin_t *allDatabases, char *admin) {
+    recordLog(func_showLoaners_log, admin);
+
     char buffString[BUFFMAX];
     int ISBN;
     printf("Enter book's ISBN:\n");
@@ -316,4 +355,5 @@ void showLoaners(DBAdmin_t *allDatabases) {
         }
     }
     printf("No book with this ISBN or there aren't loaned books with this ISBN\n");
+    recordLog(book_LoanersNotFound_log, admin);
 }

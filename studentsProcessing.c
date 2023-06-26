@@ -1,12 +1,13 @@
 #include "studentsProcessing.h"
 #include "parseFreeRewrite.h"
 #include "borrowedProcessing.h"
-#include "menuFile.h"
+#include "logs.h"
 
 
-void addStudent(DBStudent_t *students_db) {
+void addStudent(DBStudent_t *students_db, char *admin) {
+    recordLog(func_addStudent_log, admin);
+
     char buffString[BUFFMAX];
-
     printf("Enter card number:\n");
     fgets(buffString, BUFFMAX, stdin);
     buffString[strlen(buffString) - 1] = '\0';
@@ -14,6 +15,7 @@ void addStudent(DBStudent_t *students_db) {
     for (int i = 0; i < students_db->studentsNumber; i++) {
         if (strcmp(buffString, students_db->studentsDatabase[i].cardNumber) == 0) {
             printf("Sorry, this card number is already taken by another student\n");
+            recordLog(student_AddError_log, admin);
             return;
         }
     }
@@ -23,7 +25,8 @@ void addStudent(DBStudent_t *students_db) {
     if (temp != NULL)
         students_db->studentsDatabase = temp;
     else {
-        puts("Sorry, this programmer is talentless");
+        printf("Sorry, this programmer is talentless\n");
+        recordLog(memory_ReallocError_log, admin);
         return;
     }
 
@@ -55,10 +58,14 @@ void addStudent(DBStudent_t *students_db) {
     strcpy(students_db->studentsDatabase[students_db->studentsNumber].speciality, buffString);
 
     students_db->studentsNumber++;
+    printf("Student added successfully\n");
+    recordLog(student_AddSuccess_log, admin);
 }
 
 
-void deleteStudent(DBAdmin_t *allDatabases) {
+void deleteStudent(DBAdmin_t *allDatabases, char *admin) {
+    recordLog(func_deleteStudent_log, admin);
+
     char cardNumber[BUFFMAX];
     printf("Enter card number to delete student from database:\n");
     fgets(cardNumber, BUFFMAX, stdin);
@@ -68,6 +75,7 @@ void deleteStudent(DBAdmin_t *allDatabases) {
         if (strcmp(cardNumber, allDatabases->student_db.studentsDatabase[i].cardNumber) == 0) {
             if (ifStudentHasBooks(&allDatabases->borrow_db, allDatabases->student_db.studentsDatabase[i])) {
                 printf("Cannot delete student that borrows books\n");
+                recordLog(student_DeleteBorrows_log, admin);
                 return;
             }
             freeOneStudent(&allDatabases->student_db.studentsDatabase[i]);
@@ -76,13 +84,18 @@ void deleteStudent(DBAdmin_t *allDatabases) {
             allDatabases->student_db.studentsNumber--;
 
             printf("Student successfully deleted!\n");
+            recordLog(student_DeleteSuccess_log, admin);
             return;
         }
     }
     printf("Sorry, you're trying to delete imaginary student\n");
+    recordLog(student_DeleteSuccess_log, admin);
 }
 
-void editStudentInfo(DBStudent_t *students_db) {
+
+void editStudentInfo(DBStudent_t *students_db, char *admin) {
+    recordLog(func_editStudentInfo_log, admin);
+
     char buffString[BUFFMAX];
     printf("Enter student's card number or '0' to exit editor:\n");
     fgets(buffString, BUFFMAX, stdin);
@@ -99,6 +112,7 @@ void editStudentInfo(DBStudent_t *students_db) {
 
     if (i == students_db->studentsNumber) {
         printf("Sorry, you're trying to edit imaginary student's info\n");
+        recordLog(student_EditNotFound_log, admin);
         return;
     }
 
@@ -126,6 +140,7 @@ void editStudentInfo(DBStudent_t *students_db) {
             strcpy(buffString, "");
 
             printf("Data successfully edited!\n");
+            recordLog(student_EditSuccess_log, admin);
             break;
 
         case surname:
@@ -137,6 +152,7 @@ void editStudentInfo(DBStudent_t *students_db) {
             strcpy(buffString, "");
 
             printf("Data successfully edited!\n");
+            recordLog(student_EditSuccess_log, admin);
             break;
 
         case faculty:
@@ -148,6 +164,7 @@ void editStudentInfo(DBStudent_t *students_db) {
             strcpy(buffString, "");
 
             printf("Data successfully edited!\n");
+            recordLog(student_EditSuccess_log, admin);
             break;
 
         case specialty:
@@ -159,17 +176,21 @@ void editStudentInfo(DBStudent_t *students_db) {
             strcpy(buffString, "");
 
             printf("Data successfully edited!\n");
+            recordLog(student_EditSuccess_log, admin);
             break;
 
         default:
             printf("Wrong info field is chosen. Try again\n");
+            recordLog(student_EditWrongChoice_log, admin);
             break;
     }
-    editStudentInfo(students_db);
+    editStudentInfo(students_db, admin);
 }
 
 
-void showStudentByCardNumber(DBStudent_t *students_db) {
+void showStudentByCardNumber(DBStudent_t *students_db, char *admin) {
+    recordLog(func_showStudentByCardNumber_log, admin);
+
     char buffString[BUFFMAX];
     printf("Enter card number to see student info:\n");
     fgets(buffString, BUFFMAX, stdin);
@@ -186,9 +207,12 @@ void showStudentByCardNumber(DBStudent_t *students_db) {
     }
 
     printf("Sorry, no student with this card number\n");
+    recordLog(student_ShowByCardNotFound_log, admin);
 }
 
-void showStudentBySurname(DBStudent_t *students_db) {
+void showStudentBySurname(DBStudent_t *students_db, char *admin) {
+    recordLog(func_showStudentBySurname_log, admin);
+
     char buffString[BUFFMAX];
     bool studentFound = false;
     printf("Enter surname to see student info:\n");
@@ -208,11 +232,15 @@ void showStudentBySurname(DBStudent_t *students_db) {
         }
     }
 
-    if (!studentFound)
+    if (!studentFound) {
         printf("Sorry, no student with this surname\n");
+        recordLog(student_ShowBySurnameNotFound_log, admin);
+    }
 }
 
-void showBorrowedBooks(DBAdmin_t *allDatabases) {
+void showBorrowedBooks(DBAdmin_t *allDatabases, char *admin) {
+    recordLog(func_showBorrowedBooks_log, admin);
+
     char buffString[BUFFMAX];
     printf("Enter student's card number;\n");
     fgets(buffString, BUFFMAX, stdin);
@@ -236,4 +264,5 @@ void showBorrowedBooks(DBAdmin_t *allDatabases) {
         }
     }
     printf("No student with this card number or they don't have any books\n");
+    recordLog(student_ShowBorrowedNotFound_log, admin);
 }

@@ -3,13 +3,12 @@
 #include "menuFile.h"
 
 
-void addStudent(DBStudent_t *students_db);
-void deleteStudent(DBAdmin_t *allDatabases);
-void rewriteStudentsFile(DBStudent_t students_db);
-void editStudentInfo(DBStudent_t *students_db);
-void showStudentByCardNumber(DBStudent_t *students_db);
-void showStudentBySurname(DBStudent_t *students_db);
-void showBorrowedBooks(DBAdmin_t *allDatabases);
+void addStudent(DBStudent_t *students_db, char *admin);
+void deleteStudent(DBAdmin_t *allDatabases, char *admin);
+void editStudentInfo(DBStudent_t *students_db, char *admin);
+void showStudentByCardNumber(DBStudent_t *students_db, char *admin);
+void showStudentBySurname(DBStudent_t *students_db, char *admin);
+void showBorrowedBooks(DBAdmin_t *allDatabases, char *admin);
 
 
 enum studentActions {

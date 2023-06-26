@@ -15,6 +15,7 @@
 #define BOOKS_FILE "../source_files/books.csv"
 #define STUDENTS_FILE "../source_files/students.csv"
 #define BORROWS_FILE "../source_files/student_books.csv"
+#define LOGS_FILE "../source_files/library.log"
 
 typedef struct user {
     char *login;
@@ -94,6 +95,6 @@ enum bossChoice {
 };
 
 int launcher();
-void exitMenu(DBAdmin_t *allDatabases, DBUser_t *user_db);
+void exitMenu(DBAdmin_t *allDatabases, DBUser_t *user_db, char *admin);
 
 #endif //BIGHW_MENUFILE_H

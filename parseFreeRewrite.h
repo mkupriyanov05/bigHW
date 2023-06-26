@@ -12,6 +12,8 @@ void freeStudentsDatabase(DBStudent_t *students_db);
 void freeOneStudent(Student_t *student);
 void freeBorrowsDatabase(DBBorrow_t *books_db);
 void freeOneBorrow(Borrow_t *borrow);
+void rewriteBooksFile(DBBook_t books_db);
+void rewriteStudentsFile(DBStudent_t students_db);
 int compare(const int *i, const int *j);
 
 #endif //BIGHW_PARSEFREEREWRITE_H
