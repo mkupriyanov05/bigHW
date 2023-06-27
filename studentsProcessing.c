@@ -100,11 +100,11 @@ void editStudentInfo(DBStudent_t *students_db, char *admin) {
     printf("Enter student's card number or '0' to exit editor:\n");
     fgets(buffString, BUFFMAX, stdin);
     buffString[strlen(buffString) - 1] = '\0';
-    int i = 0;
 
     if (strcmp(buffString, "0") == 0)
         return;
 
+    int i = 0;
     for (; i < students_db->studentsNumber; i++) {
         if (strcmp(buffString, students_db->studentsDatabase[i].cardNumber) == 0)
             break;

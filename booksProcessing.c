@@ -102,16 +102,12 @@ void editBookInfo(DBBook_t *books_db, char *admin) {
         return;
 
     int i = 0;
-    bool bookFound = false;
-
     for (; i < books_db->booksNumber; i++) {
-        if (currISBN == books_db->booksDatabase[i].ISBN) {
-            bookFound = true;
+        if (currISBN == books_db->booksDatabase[i].ISBN)
             break;
-        }
     }
 
-    if (!bookFound) {
+    if (i == books_db->booksNumber) {
         printf("Sorry, you're trying to edit imaginary book's info\n");
         recordLog(book_EditNotFound_log, admin);
         return;
@@ -122,10 +118,12 @@ void editBookInfo(DBBook_t *books_db, char *admin) {
     printf("1 - Author\n");
     printf("2 - Book's name\n");
     printf("3 - Max amount\n");
+    printf("%s;%s\n", books_db->booksDatabase[i].author, books_db->booksDatabase[i].bookName);
 
     int choice;
     fgets(buffString, BUFFMAX, stdin);
     sscanf(buffString, "%d", &choice);
+    printf("%s;%s\n", books_db->booksDatabase[i].author, books_db->booksDatabase[i].bookName);
 
     char newInfo[BUFFMAX];
     int prevMaxAmount = books_db->booksDatabase[i].maxAmount;

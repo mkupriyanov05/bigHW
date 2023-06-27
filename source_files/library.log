@@ -1,30 +1,9 @@
-Mon Jun 26 20:36:42 2023,boss,authentication
-Mon Jun 26 20:36:42 2023,boss,Authentication succeed
-Mon Jun 26 20:36:42 2023,boss,upperMenu
-Mon Jun 26 20:36:47 2023,boss,booksMenu
-Mon Jun 26 20:36:52 2023,boss,exitMenu
-Mon Jun 26 20:36:52 2023,boss,Program finished
-Mon Jun 26 20:52:25 2023,books,authentication
-Mon Jun 26 20:52:25 2023,books,Authentication succeed
-Mon Jun 26 20:52:25 2023,books,booksMenu
-Mon Jun 26 20:52:47 2023,books,addBook
-Mon Jun 26 20:52:50 2023,books,ISBN is already taken
-Mon Jun 26 20:52:50 2023,books,booksMenu
-Mon Jun 26 20:53:07 2023,books,addBook
-Mon Jun 26 20:53:47 2023,books,Book successfully added
-Mon Jun 26 20:53:47 2023,books,booksMenu
-Mon Jun 26 20:53:50 2023,books,exitMenu
-Mon Jun 26 20:53:50 2023,books,Program finished
-Mon Jun 26 20:54:28 2023,books,authentication
-Mon Jun 26 20:54:28 2023,books,Authentication succeed
-Mon Jun 26 20:54:28 2023,books,booksMenu
-Mon Jun 26 20:54:33 2023,books,deleteBook
-Mon Jun 26 20:54:36 2023,books,Book successfully deleted
-Mon Jun 26 20:54:36 2023,books,booksMenu
-Mon Jun 26 20:54:38 2023,books,exitMenu
-Mon Jun 26 20:54:38 2023,books,Program finished
-Mon Jun 26 20:55:32 2023,boss,authentication
-Mon Jun 26 20:55:32 2023,boss,Authentication succeed
-Mon Jun 26 20:55:32 2023,boss,upperMenu
-Mon Jun 26 20:55:33 2023,boss,exitMenu
-Mon Jun 26 20:55:33 2023,boss,Program finished
+Tue Jun 27 13:44:09 2023,boss,authentication
+Tue Jun 27 13:44:09 2023,boss,Authentication succeed
+Tue Jun 27 13:44:09 2023,boss,upperMenu
+Tue Jun 27 13:44:19 2023,boss,booksMenu
+Tue Jun 27 13:44:23 2023,boss,editBookInfo
+Tue Jun 27 13:44:27 2023,boss,Book cannot be edited (not found)
+Tue Jun 27 13:44:27 2023,boss,booksMenu
+Tue Jun 27 13:44:37 2023,boss,exitMenu
+Tue Jun 27 13:44:37 2023,boss,Program finished
