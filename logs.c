@@ -6,13 +6,12 @@ void recordLog(void (*logInterior)(char*), char *adminName) {
 
     time_t currTime = time(NULL);
     struct tm *local = localtime(&currTime);
-
-    char message[BUFFMAX];
-    logInterior(message);
-
     char timeString[BUFFMAX];
     strcpy(timeString, asctime(local));
     timeString[strlen(timeString) - 1] = '\0';
+
+    char message[BUFFMAX];
+    logInterior(message);
 
     fprintf(log_f, "%s,%s,%s\n", timeString, adminName, message);
 
