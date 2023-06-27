@@ -125,7 +125,7 @@ void editStudentInfo(DBStudent_t *students_db, char *admin) {
 
     int choice;
     fgets(buffString, BUFFMAX, stdin);
-    sscanf(buffString, "%d", &choice);
+    choice = strtol(buffString, NULL, 10);
 
     switch (choice) {
         case 0:
@@ -242,7 +242,7 @@ void showBorrowedBooks(DBAdmin_t *allDatabases, char *admin) {
     recordLog(func_showBorrowedBooks_log, admin);
 
     char buffString[BUFFMAX];
-    printf("Enter student's card number;\n");
+    printf("Enter student's card number:\n");
     fgets(buffString, BUFFMAX, stdin);
     buffString[strlen(buffString) - 1] = '\0';
 

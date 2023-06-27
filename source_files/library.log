@@ -7,3 +7,22 @@ Tue Jun 27 13:44:27 2023,boss,Book cannot be edited (not found)
 Tue Jun 27 13:44:27 2023,boss,booksMenu
 Tue Jun 27 13:44:37 2023,boss,exitMenu
 Tue Jun 27 13:44:37 2023,boss,Program finished
+Tue Jun 27 22:32:39 2023,boss,authentication
+Tue Jun 27 22:32:39 2023,boss,Authentication succeed
+Tue Jun 27 22:32:39 2023,boss,upperMenu
+Tue Jun 27 22:32:50 2023,boss,booksMenu
+Tue Jun 27 22:32:55 2023,boss,exitMenu
+Tue Jun 27 22:32:55 2023,boss,Program finished
+Tue Jun 27 22:46:50 2023,boss,authentication
+Tue Jun 27 22:46:50 2023,boss,Authentication succeed
+Tue Jun 27 22:46:50 2023,boss,upperMenu
+Tue Jun 27 22:46:52 2023,boss,studentsMenu
+Tue Jun 27 22:47:03 2023,boss,deleteStudent
+Tue Jun 27 22:47:08 2023,boss,Student deleted successfully
+Tue Jun 27 22:47:08 2023,boss,studentsMenu
+Tue Jun 27 22:47:17 2023,boss,showStudentBySurname
+Tue Jun 27 22:47:22 2023,boss,studentsMenu
+Tue Jun 27 22:47:31 2023,boss,showBorrowedBooks
+Tue Jun 27 22:47:48 2023,boss,studentsMenu
+Tue Jun 27 22:47:56 2023,boss,exitMenu
+Tue Jun 27 22:47:56 2023,boss,Program finished

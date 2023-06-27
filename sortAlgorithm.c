@@ -45,4 +45,3 @@ static int partition(Book_t *database, int low, int high, bool (*compare)(void*,
     SWAP(database[i + 1], database[high]);
     return i + 1;
 }
-

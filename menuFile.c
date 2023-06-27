@@ -105,7 +105,7 @@ void upperMenu(DBAdmin_t *allDatabases, DBUser_t *user_db, char *admin) {
     printf("1 - bookz\n");
     printf("2 - studentz\n");
     fgets(buffString, BUFFMAX, stdin);
-    sscanf(buffString, "%d", &menuChoice);
+    menuChoice = strtol(buffString, NULL, 10);
 
     switch (menuChoice) {
         case 0:
@@ -144,7 +144,7 @@ void booksMenu(bool returnPermission, DBAdmin_t *allDatabases, DBUser_t *user_db
     char buffString[BUFFMAX];
     int choice;
     fgets(buffString, BUFFMAX, stdin);
-    sscanf(buffString, "%d", &choice);
+    choice = strtol(buffString, NULL, 10);
 
     switch (choice) {
         case finish_b:
@@ -208,7 +208,7 @@ void studentsMenu(bool returnPermission, DBAdmin_t *allDatabases, DBUser_t *user
     char buffString[BUFFMAX];
     int choice;
     fgets(buffString, BUFFMAX, stdin);
-    sscanf(buffString, "%d", &choice);
+    choice = strtol(buffString, NULL, 10);
 
     switch (choice) {
         case finish_s:

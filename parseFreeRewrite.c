@@ -1,8 +1,6 @@
 #include "parseFreeRewrite.h"
 #include "menuFile.h"
-#include "borrowedProcessing.h"
-#include "booksProcessing.h"
-#include "studentsProcessing.h"
+//#include "borrowedProcessing.h"
 
 
 void structUserFill(User_t **usersDatabase, int usersNumber, char *strToken);
@@ -143,11 +141,14 @@ void structBorrowFill(Borrow_t **borrowDatabase, int borrowNumber, char *strToke
 }
 
 
+void freeOneUser(User_t *user) {
+    free(user->login);
+    free(user->passHash);
+}
+
 void freeUsersDatabase(DBUser_t *users_db) {
-    for (int i = 0; i < users_db->usersNumber; ++i) {
-        free(users_db->usersDatabase[i].login);
-        free(users_db->usersDatabase[i].passHash);
-    }
+    for (int i = 0; i < users_db->usersNumber; ++i)
+        freeOneUser(&users_db->usersDatabase[i]);
     free(users_db->usersDatabase);
 }
 
@@ -188,7 +189,6 @@ void freeBorrowsDatabase(DBBorrow_t *books_db) {
 }
 
 
-
 void rewriteStudentsFile(DBStudent_t students_db) {
     FILE *students_f = fopen(STUDENTS_FILE, "w");
 
@@ -202,7 +202,6 @@ void rewriteStudentsFile(DBStudent_t students_db) {
         if (j != students_db.studentsNumber - 1)
             fprintf(students_f, "\n");
     }
-
     fclose(students_f);
 }
 
@@ -220,7 +219,6 @@ void rewriteBooksFile(DBBook_t books_db) {
         if (j != books_db.booksNumber - 1)
             fprintf(books_f, "\n");
     }
-
     fclose(books_f);
 }
 
@@ -235,6 +233,5 @@ void rewriteBorrowsFile(DBBorrow_t borrows_db) {
         if (j != borrows_db.borrowsNumber - 1)
             fprintf(borrows_f, "\n");
     }
-
     fclose(borrows_f);
 }

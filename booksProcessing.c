@@ -13,7 +13,7 @@ void addBook(DBBook_t *books_db, char *admin) {
 
     printf("Enter ISBN:\n");
     fgets(buffString, BUFFMAX, stdin);
-    sscanf(buffString, "%d", &ISBN);
+    ISBN = strtol(buffString, NULL, 10);
 
     for (int i = 0; i < books_db->booksNumber; i++) {
         if (ISBN == books_db->booksDatabase[i].ISBN) {
@@ -49,7 +49,7 @@ void addBook(DBBook_t *books_db, char *admin) {
 
     printf("Enter max amount of books (amount of available books fills up automatically):\n");
     fgets(buffString, BUFFMAX, stdin);
-    sscanf(buffString, "%d", &books_db->booksDatabase[books_db->booksNumber].maxAmount);
+    books_db->booksDatabase[books_db->booksNumber].maxAmount = strtol(buffString, NULL, 10);
     books_db->booksDatabase[books_db->booksNumber].currAmount =
             books_db->booksDatabase[books_db->booksNumber].maxAmount;
 
@@ -66,7 +66,7 @@ void deleteBook(DBAdmin_t *allDatabases, char *admin) {
     int ISBN;
     printf("Enter book ISBN to delete from database:\n");
     fgets(buffString, BUFFMAX, stdin);
-    sscanf(buffString, "%d", &ISBN);
+    ISBN = strtol(buffString, NULL, 10);
 
     for (int i = 0; i < allDatabases->book_db.booksNumber; i++) {
         if (ISBN == allDatabases->book_db.booksDatabase[i].ISBN) {
@@ -96,7 +96,7 @@ void editBookInfo(DBBook_t *books_db, char *admin) {
     int currISBN;
     printf("Enter book's ISBN or '0' to exit editor:\n");
     fgets(buffString, BUFFMAX, stdin);
-    sscanf(buffString, "%d", &currISBN);
+    currISBN = strtol(buffString, NULL, 10);
 
     if (currISBN == 0)
         return;
@@ -122,7 +122,7 @@ void editBookInfo(DBBook_t *books_db, char *admin) {
 
     int choice;
     fgets(buffString, BUFFMAX, stdin);
-    sscanf(buffString, "%d", &choice);
+    choice = strtol(buffString, NULL, 10);
     printf("%s;%s\n", books_db->booksDatabase[i].author, books_db->booksDatabase[i].bookName);
 
     char newInfo[BUFFMAX];
@@ -160,7 +160,7 @@ void editBookInfo(DBBook_t *books_db, char *admin) {
             do {
                 printf("Enter new max amount (max amount cannot be less than amount of borrowed books):\n");
                 fgets(newInfo, BUFFMAX, stdin);
-                sscanf(newInfo, "%d", &books_db->booksDatabase[i].maxAmount);
+                books_db->booksDatabase[i].maxAmount = strtol(buffString, NULL, 10);
             } while (books_db->booksDatabase[i].maxAmount < (prevMaxAmount - books_db->booksDatabase[i].currAmount));
 
             books_db->booksDatabase[i].currAmount += (books_db->booksDatabase[i].maxAmount - prevMaxAmount);
@@ -184,7 +184,7 @@ void showOneBook(DBBook_t *books_db, char *admin) {
     int currISBN;
     printf("Enter ISBN to watch book info:\n");
     fgets(buffString, BUFFMAX, stdin);
-    sscanf(buffString, "%d", &currISBN);
+    currISBN = strtol(buffString, NULL, 10);
 
     for (int i = 0; i < books_db->booksNumber; ++i) {
         if (books_db->booksDatabase[i].ISBN == currISBN) {
@@ -223,7 +223,7 @@ void giveBook(DBAdmin_t *allDatabases, char *admin) {
 
     printf("Enter ISBN of the book you want to take:\n");
     fgets(buffString, BUFFMAX, stdin);
-    sscanf(buffString, "%d", &ISBN);
+    ISBN = strtol(buffString, NULL, 10);
 
     printf("Enter student's card number\n");
     fgets(buffString, BUFFMAX, stdin);
@@ -286,7 +286,7 @@ void takeBook(DBAdmin_t *allDatabases, char *admin) {
     int ISBN;
     printf("Enter ISBN of the book you want to give back:\n");
     fgets(buffString, BUFFMAX, stdin);
-    sscanf(buffString, "%d", &ISBN);
+    ISBN = strtol(buffString, NULL, 10);
 
     printf("Enter student's card number\n");
     fgets(buffString, BUFFMAX, stdin);
@@ -332,7 +332,7 @@ void showLoaners(DBAdmin_t *allDatabases, char *admin) {
     int ISBN;
     printf("Enter book's ISBN:\n");
     fgets(buffString, BUFFMAX, stdin);
-    sscanf(buffString, "%d", &ISBN);
+    ISBN = strtol(buffString, NULL, 10);
 
     for (int i = 0; i < allDatabases->borrow_db.borrowsNumber; ++i) {
         if (allDatabases->borrow_db.borrowsDatabase[i].ISBN == ISBN) {
