@@ -1,11 +1,13 @@
 #ifndef BIGHW_LOGS_H
 #define BIGHW_LOGS_H
 
-#include "menuFile.h"
+#include "menuAuth.h"
 #include "time.h"
 
 void recordLog(void (*logInterior)(char*), char *adminName);
 
+void func_signUp_log(char *message);
+void func_logIn_log(char *message);
 void func_authentication_log(char *message);
 void func_upperMenu_log(char *message);
 void func_booksMenu_log(char *message);
@@ -28,6 +30,7 @@ void func_showBorrowedBooks_log(char *message);
 void logIn_Success_log(char *message);
 void logIn_Error_log(char *message);
 void logIn_NoRights_log(char *message);
+void signUp_Success_log(char *message);
 void menu_WrongChoice_log(char *message);
 void menu_NoReturnPermission_log(char *message);
 void memory_ReallocError_log(char *message);

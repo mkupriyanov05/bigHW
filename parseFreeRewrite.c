@@ -1,5 +1,5 @@
 #include "parseFreeRewrite.h"
-#include "menuFile.h"
+#include "menuAuth.h"
 //#include "borrowedProcessing.h"
 
 
@@ -188,6 +188,21 @@ void freeBorrowsDatabase(DBBorrow_t *books_db) {
     free(books_db->borrowsDatabase);
 }
 
+
+void rewriteUsersFile(DBUser_t user_db) {
+    FILE *users_f = fopen(USERS_FILE, "w");
+
+    for (int j = 0; j < user_db.usersNumber; ++j) {
+        fprintf(users_f, "%s,%s,%d,%d",
+                user_db.usersDatabase[j].login,
+                user_db.usersDatabase[j].passHash,
+                user_db.usersDatabase[j].booksRights,
+                user_db.usersDatabase[j].studentsRights);
+        if (j != user_db.usersNumber - 1)
+            fprintf(users_f, "\n");
+    }
+    fclose(users_f);
+}
 
 void rewriteStudentsFile(DBStudent_t students_db) {
     FILE *students_f = fopen(STUDENTS_FILE, "w");

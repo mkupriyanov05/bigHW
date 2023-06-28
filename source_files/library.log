@@ -1,28 +1,10 @@
-Tue Jun 27 13:44:09 2023,boss,authentication
-Tue Jun 27 13:44:09 2023,boss,Authentication succeed
-Tue Jun 27 13:44:09 2023,boss,upperMenu
-Tue Jun 27 13:44:19 2023,boss,booksMenu
-Tue Jun 27 13:44:23 2023,boss,editBookInfo
-Tue Jun 27 13:44:27 2023,boss,Book cannot be edited (not found)
-Tue Jun 27 13:44:27 2023,boss,booksMenu
-Tue Jun 27 13:44:37 2023,boss,exitMenu
-Tue Jun 27 13:44:37 2023,boss,Program finished
-Tue Jun 27 22:32:39 2023,boss,authentication
-Tue Jun 27 22:32:39 2023,boss,Authentication succeed
-Tue Jun 27 22:32:39 2023,boss,upperMenu
-Tue Jun 27 22:32:50 2023,boss,booksMenu
-Tue Jun 27 22:32:55 2023,boss,exitMenu
-Tue Jun 27 22:32:55 2023,boss,Program finished
-Tue Jun 27 22:46:50 2023,boss,authentication
-Tue Jun 27 22:46:50 2023,boss,Authentication succeed
-Tue Jun 27 22:46:50 2023,boss,upperMenu
-Tue Jun 27 22:46:52 2023,boss,studentsMenu
-Tue Jun 27 22:47:03 2023,boss,deleteStudent
-Tue Jun 27 22:47:08 2023,boss,Student deleted successfully
-Tue Jun 27 22:47:08 2023,boss,studentsMenu
-Tue Jun 27 22:47:17 2023,boss,showStudentBySurname
-Tue Jun 27 22:47:22 2023,boss,studentsMenu
-Tue Jun 27 22:47:31 2023,boss,showBorrowedBooks
-Tue Jun 27 22:47:48 2023,boss,studentsMenu
-Tue Jun 27 22:47:56 2023,boss,exitMenu
-Tue Jun 27 22:47:56 2023,boss,Program finished
+Wed Jun 28 19:01:37 2023,-,signUp
+Wed Jun 28 19:02:02 2023,Vilka,User successfully added
+Wed Jun 28 19:02:13 2023,-,logIn
+Wed Jun 28 19:02:23 2023,Vilka,authentication
+Wed Jun 28 19:02:23 2023,Vilka,Authentication succeed
+Wed Jun 28 19:02:23 2023,Vilka,studentsMenu
+Wed Jun 28 19:02:27 2023,Vilka,No permission to return to upper menu
+Wed Jun 28 19:02:27 2023,Vilka,studentsMenu
+Wed Jun 28 19:02:35 2023,Vilka,exitMenu
+Wed Jun 28 19:02:35 2023,Vilka,Program finished

@@ -19,6 +19,14 @@ void recordLog(void (*logInterior)(char*), char *adminName) {
 }
 
 
+void func_signUp_log(char *message) {
+    strcpy(message, "signUp");
+}
+
+void func_logIn_log(char *message) {
+    strcpy(message, "logIn");
+}
+
 void func_authentication_log(char *message) {
     strcpy(message, "authentication");
 }
@@ -106,6 +114,10 @@ void logIn_Error_log(char *message) {
 
 void logIn_NoRights_log(char *message) {
     strcpy(message, "You have no rights (woman moment)");
+}
+
+void signUp_Success_log(char *message) {
+    strcpy(message, "User successfully added");
 }
 
 void menu_WrongChoice_log(char *message) {

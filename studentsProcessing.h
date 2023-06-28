@@ -1,6 +1,6 @@
 #ifndef BIGHW_STUDENTSPROCESSING_H
 #define BIGHW_STUDENTSPROCESSING_H
-#include "menuFile.h"
+#include "menuAuth.h"
 
 
 void addStudent(DBStudent_t *students_db, char *admin);

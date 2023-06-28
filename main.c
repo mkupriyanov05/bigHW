@@ -1,4 +1,4 @@
-#include "menuFile.h"
+#include "menuAuth.h"
 #include "calcHash.h"
 
 /*  Here's how database structure looks like:
