@@ -3,7 +3,13 @@
 
 #include "menuAuth.h"
 
-void parseFile(void **database, int *itemsNumber, char *filename, size_t structSize, int parseType);
+void parseFile(void **database, int *itemsNumber, char *filename,
+               size_t structSize, void (*structFill)(void**, int, char*));
+
+void structUserFill(void **usersDatabase, int usersNumber, char *strToken);
+void structBookFill(void **booksDatabase, int booksNumber, char *strToken);
+void structStudentFill(void **studentsDatabase, int studentsNumber, char *strToken);
+void structBorrowFill(void **borrowDatabase, int borrowNumber, char *strToken);
 
 void freeUsersDatabase(DBUser_t *users_db);
 void freeBooksDatabase(DBBook_t *books_db);

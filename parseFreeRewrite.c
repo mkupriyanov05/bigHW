@@ -1,15 +1,9 @@
 #include "parseFreeRewrite.h"
 #include "menuAuth.h"
-//#include "borrowedProcessing.h"
 
 
-void structUserFill(User_t **usersDatabase, int usersNumber, char *strToken);
-void structBookFill(Book_t **booksDatabase, int booksNumber, char *strToken);
-void structStudentFill(Student_t **studentsDatabase, int studentsNumber, char *strToken);
-void structBorrowFill(Borrow_t **borrowDatabase, int borrowNumber, char *strToken);
-
-
-void parseFile(void **database, int *itemsNumber, char *filename, size_t structSize, int parseType) {
+void parseFile(void **database, int *itemsNumber, char *filename,
+               size_t structSize, void (*structFill)(void**, int, char*)) {
     FILE *parse_f = fopen(filename, "r");
 
     if (parse_f == NULL) {
@@ -35,18 +29,20 @@ void parseFile(void **database, int *itemsNumber, char *filename, size_t structS
         if (temp != NULL)
             *database = temp;
         else {
-            puts("Sorry, this programmer is talentless");
+            printf("Sorry, this programmer is talentless\n");
             exit(1);
         }
 
-        if (parseType == users)
-            structUserFill((User_t**)database, *itemsNumber, strToken);
-        else if (parseType == books)
-            structBookFill((Book_t**)database, *itemsNumber, strToken);
-        else if (parseType == students)
-            structStudentFill((Student_t**)database, *itemsNumber, strToken);
-        else if (parseType == borrows)
-            structBorrowFill((Borrow_t**)database, *itemsNumber, strToken);
+//        if (parseType == users)
+//            structUserFill((User_t**)database, *itemsNumber, strToken);
+//        else if (parseType == books)
+//            structBookFill((Book_t**)database, *itemsNumber, strToken);
+//        else if (parseType == students)
+//            structStudentFill((Student_t**)database, *itemsNumber, strToken);
+//        else if (parseType == borrows)
+//            structBorrowFill((Borrow_t**)database, *itemsNumber, strToken);
+
+        structFill(database, *itemsNumber, strToken);
 
         strToken = strtok_r(fileRest, strDelimiter, &fileRest);
         (*itemsNumber)++;
@@ -56,7 +52,8 @@ void parseFile(void **database, int *itemsNumber, char *filename, size_t structS
 }
 
 
-void structUserFill(User_t **usersDatabase, int usersNumber, char *strToken) {
+void structUserFill(void **database, int usersNumber, char *strToken) {
+    User_t **usersDatabase = (User_t**)database;
     char *lilToken;
     const char lilDelimiter[] = ",";
 
@@ -75,7 +72,8 @@ void structUserFill(User_t **usersDatabase, int usersNumber, char *strToken) {
     (*usersDatabase)[usersNumber].booksRights = (bool)atoi(strtok(NULL, lilDelimiter));
 }
 
-void structBookFill(Book_t **booksDatabase, int booksNumber, char *strToken) {
+void structBookFill(void **database, int booksNumber, char *strToken) {
+    Book_t **booksDatabase = (Book_t**)database;
     char *lilToken;
     const char lilDelimiter[] = ",";
 
@@ -96,7 +94,8 @@ void structBookFill(Book_t **booksDatabase, int booksNumber, char *strToken) {
     strcpy(lilToken, "");
 }
 
-void structStudentFill(Student_t **studentsDatabase, int studentsNumber, char *strToken) {
+void structStudentFill(void **database, int studentsNumber, char *strToken) {
+    Student_t **studentsDatabase = (Student_t**)database;
     char *lilToken;
     const char lilDelimiter[] = ",";
 
@@ -123,7 +122,8 @@ void structStudentFill(Student_t **studentsDatabase, int studentsNumber, char *s
     strcpy(lilToken, "");
 }
 
-void structBorrowFill(Borrow_t **borrowDatabase, int borrowNumber, char *strToken) {
+void structBorrowFill(void **database, int borrowNumber, char *strToken) {
+    Borrow_t **borrowDatabase = (Borrow_t**)database;
     char *lilToken;
     const char lilDelimiter[] = ",";
 

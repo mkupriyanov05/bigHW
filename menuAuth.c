@@ -31,13 +31,13 @@ int launcher() {
 
 
     parseFile((void**)&(user_db.usersDatabase), &user_db.usersNumber,
-              USERS_FILE, sizeof(User_t), users);
+              USERS_FILE, sizeof(User_t), structUserFill);
     parseFile((void**)&(allDatabases.student_db.studentsDatabase), &allDatabases.student_db.studentsNumber,
-              STUDENTS_FILE, sizeof(Student_t), students);
+              STUDENTS_FILE, sizeof(Student_t), structStudentFill);
     parseFile((void**)&(allDatabases.book_db.booksDatabase), &allDatabases.book_db.booksNumber,
-              BOOKS_FILE, sizeof(Student_t), books);
+              BOOKS_FILE, sizeof(Student_t), structBookFill);
     parseFile((void**)&(allDatabases.borrow_db.borrowsDatabase), &allDatabases.borrow_db.borrowsNumber,
-              BORROWS_FILE, sizeof(Student_t), borrows);
+              BORROWS_FILE, sizeof(Student_t), structBorrowFill);
 
     AuthData_t authData;
 
